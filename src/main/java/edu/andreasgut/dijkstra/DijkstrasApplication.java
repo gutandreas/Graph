@@ -4,7 +4,6 @@ import edu.andreasgut.dijkstra.core.Edge;
 import edu.andreasgut.dijkstra.core.Graph;
 import edu.andreasgut.dijkstra.core.Node;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -16,7 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
 
-public class HelloApplication extends Application {
+public class DijkstrasApplication extends Application {
 
 
 
@@ -24,26 +23,50 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         Graph graph = new Graph();
+        LinkedList<Node> nodes = new LinkedList<>();
+
+        //TODO: Definiere hier alle Knoten, die du im Graph haben möchtest
+        Node nodeStart = new Node("Start");
         Node nodeA = new Node("A");
         Node nodeB = new Node("B");
         Node nodeC = new Node("C");
         Node nodeD = new Node("D");
         Node nodeE = new Node("E");
+        Node nodeF = new Node("F");
+        Node nodeZiel = new Node("Ziel");
+
+        //TODO: Füge hier alle Knoten zum Graph hinzu
+        graph.addNode(nodeStart);
         graph.addNode(nodeA);
         graph.addNode(nodeB);
         graph.addNode(nodeC);
         graph.addNode(nodeD);
         graph.addNode(nodeE);
-        graph.connectNodes(nodeA, nodeB, 9);
-        graph.connectNodes(nodeB, nodeC, 3);
-        graph.connectNodes(nodeC, nodeD, 22);
-        System.out.println(graph);
+        graph.addNode(nodeF);
+        graph.addNode(nodeZiel);
+
+        //TODO: Erstelle hier alle Kanten, die du zwischen zwei Knoten einfügen möchtest
+        graph.connectNodes(nodeStart, nodeA, 4);
+        graph.connectNodes(nodeStart, nodeC, 7);
+        graph.connectNodes(nodeStart, nodeE, 4);
+
+        graph.connectNodes(nodeA, nodeB, 3);
+        graph.connectNodes(nodeA, nodeC, 2);
+
+        graph.connectNodes(nodeB, nodeD, 1);
+
+        graph.connectNodes(nodeC, nodeD, 2);
+        graph.connectNodes(nodeC, nodeE, 9);
+
+        graph.connectNodes(nodeD, nodeF, 4);
+        graph.connectNodes(nodeD, nodeZiel, 6);
+
+        graph.connectNodes(nodeE, nodeF, 9);
+
+        graph.connectNodes(nodeF, nodeZiel, 5);
 
 
-        Node startNode = nodeA;
-        Node goalNode = nodeC;
-
-        setupGUI(stage, graph, startNode, goalNode);
+        setupGUI(stage, graph, nodeStart, nodeZiel);
     }
 
 
@@ -56,21 +79,19 @@ public class HelloApplication extends Application {
 
         stage.setTitle("Dijkstras Algorithmus");
 
-        // Create a Canvas
         int canvasWidth = 800;
         int canvasHeight = 600;
         Canvas canvas = new Canvas(canvasWidth, canvasHeight);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        // Create a Pane and add the Canvas
         Pane pane = new Pane();
         pane.getChildren().add(canvas);
 
-        // Define nodes and edges
+
         List<GuiNode> guiNodes = new ArrayList<>();
         Map<Node, GuiNode> nodeMap = new HashMap<>();
 
-        List<Point2D> points = distributePointsOnCircle(Math.min(canvasHeight, canvasWidth)/2.0*0.9, graph.getNodes().size(), canvasWidth, canvasHeight);
+        List<Point2D> points = distributePointsOnCircle(Math.min(canvasHeight, canvasWidth)/2.0*0.85, graph.getNodes().size(), canvasWidth, canvasHeight);
 
 
         int counter = 0;
@@ -93,11 +114,9 @@ public class HelloApplication extends Application {
         }
 
 
-        // Draw the graph
         drawGraph(gc, guiNodes, guiEdges);
         highlightPath(gc, path, nodeMap);
 
-        // Create a Scene and show the Stage
         Scene scene = new Scene(pane, 800, 600);
         stage.setScene(scene);
         stage.show();
@@ -147,7 +166,7 @@ public class HelloApplication extends Application {
         gc.setFill(Color.RED);
         for (GuiNode node : nodes) {
             gc.fillOval(node.x - 10, node.y - 10, 20, 20);
-            gc.strokeText(node.name, node.x - 10, node.y - 20);
+            gc.fillText(node.name, node.x - 10, node.y - 20);
         }
     }
 

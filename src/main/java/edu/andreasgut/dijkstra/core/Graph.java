@@ -7,39 +7,9 @@ public class Graph {
     private LinkedList<Node> nodes = new LinkedList<>();
     private LinkedList<Edge> edges = new LinkedList<>();
 
-
-    public Graph(){
-
-    }
-
-    public Graph(int[][] matrix) {
-        for (int nodeNumber = 0; nodeNumber < matrix.length; nodeNumber++){
-            Node node = new Node(String.valueOf(nodeNumber));
-            nodes.add(node);
-        }
-        for (int row = 0; row < matrix.length; row++) {
-            for (int column = 0; column < matrix[0].length; column++) {
-                if (matrix[row][column] != 0){
-                    Node currentNode = getNodeByName(String.valueOf(row));
-                    connectNodes(currentNode, getNodeByName(String.valueOf(column)), matrix[row][column]);
-                }
-            }
-        }
-    }
-
-    public Node getNodeByName(String name){
-        for (Node node : nodes){
-            if (node.getName().equals(name)){
-                return node;
-            }
-        }
-        return null;
-    }
-
     public void addNode(Node nodeA) {
         nodes.add(nodeA);
     }
-
 
     public LinkedList<Node> getNodes() {
         return nodes;
@@ -49,6 +19,7 @@ public class Graph {
         edges.add(new Edge(startNode, endNode, weight));
         edges.add(new Edge(endNode, startNode, weight));
     }
+
 
     public LinkedList<Edge> getEdgesFromNode(Node node){
         LinkedList<Edge> edgesList = new LinkedList<>();

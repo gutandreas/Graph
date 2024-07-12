@@ -3,7 +3,7 @@ package edu.andreasgut.dijkstra;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class DijkstrasController {
     @FXML
     private Label welcomeText;
 
