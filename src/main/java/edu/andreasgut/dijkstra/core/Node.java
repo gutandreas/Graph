@@ -10,6 +10,7 @@ public class Node {
     public void addConnection(Node node, double weight) {
         Edge edge = new Edge(this, node, weight);
         edges.add(edge);
+        node.getEdges().add(edge);
     }
 
     public Node(String name) {
