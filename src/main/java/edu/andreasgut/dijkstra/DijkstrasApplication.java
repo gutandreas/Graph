@@ -17,12 +17,13 @@ import java.util.*;
 
 public class DijkstrasApplication extends Application {
 
-
-
     @Override
     public void start(Stage stage) throws IOException {
 
         Graph graph = new Graph();
+
+        //TODO: Definiere, ob der Minimale Spannbaum (1) oder der Kürzeste Weg (2) markiert werden soll
+        int modus = 2;
 
         //TODO: Definiere hier alle Knoten, die du im Graph haben möchtest
         Node nodeStart = new Node("Start");
@@ -58,16 +59,15 @@ public class DijkstrasApplication extends Application {
         graph.connectNodes(nodeE, nodeF, 9);
         graph.connectNodes(nodeF, nodeZiel, 5);
 
-        setupGUI(stage, graph, nodeStart, nodeZiel);
+        setupGUI(stage, graph, nodeStart, nodeZiel, modus);
     }
 
 
 
-    private void setupGUI(Stage stage, Graph graph, Node startNode, Node goalNode) {
-        LinkedList<Node> path = graph.getShortestPathFromTo(startNode, goalNode);
-        for (Node n : path){
-            System.out.println(n.getName());
-        }
+    private void setupGUI(Stage stage, Graph graph, Node startNode, Node goalNode, int modus) {
+        LinkedList<Node> shortestPath = graph.getShortestPathFromTo(startNode, goalNode);
+        LinkedList<Edge> minimalSpanningTree = graph.getMinimalSpanningTree();
+
 
         stage.setTitle("Dijkstras Algorithmus");
 
@@ -107,7 +107,15 @@ public class DijkstrasApplication extends Application {
 
 
         drawGraph(gc, guiNodes, guiEdges);
-        highlightPath(gc, path, nodeMap);
+        if (modus == 1){
+            highlightPath(gc, shortestPath, nodeMap);
+        }
+        if (modus == 2) {
+            highlightMinimalSpanningTree(gc, minimalSpanningTree, nodeMap);
+        }
+
+
+
 
         Scene scene = new Scene(pane, 800, 600);
         stage.setScene(scene);
@@ -139,9 +147,16 @@ public class DijkstrasApplication extends Application {
             gc.setLineWidth(3);
             gc.strokeLine(n1.x, n1.y, n2.x, n2.y);
 
+        }
+    }
 
-
-
+    private void highlightMinimalSpanningTree(GraphicsContext gc, LinkedList<Edge> minimalSpanningTree, Map<Node, GuiNode> map){
+        for (Edge e : minimalSpanningTree){
+            GuiNode n1 = map.get(e.getStart());
+            GuiNode n2 = map.get(e.getEnd());
+            gc.setStroke(Color.ORANGE);
+            gc.setLineWidth(3);
+            gc.strokeLine(n1.x, n1.y, n2.x, n2.y);
         }
     }
 

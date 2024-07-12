@@ -95,7 +95,6 @@ public class Graph {
         }
 
         return shortestPath;
-
     }
 
     private Node getNodeWithSmallestDistance(Map<Node, Double> distanceMap, LinkedList<Node> nodesInQueue){
@@ -129,6 +128,61 @@ public class Graph {
         }
         return firstTimeVisitedNodes;
     }
+
+    public LinkedList<Edge> getMinimalSpanningTree(){
+        LinkedList<Edge> edgesOfMinimalSpanningTree = new LinkedList<>();
+        LinkedList<Node> nodesOfMinimalSpanningTree = new LinkedList<>();
+
+        nodesOfMinimalSpanningTree.add(nodes.get(0));
+
+        while (nodesOfMinimalSpanningTree.size() < nodes.size()){
+            Edge smallestEdge = getSmallestEdge(nodesOfMinimalSpanningTree, edgesOfMinimalSpanningTree);
+            if (!nodesOfMinimalSpanningTree.contains(smallestEdge.getEnd())){
+                nodesOfMinimalSpanningTree.add(smallestEdge.getEnd());
+            }
+            if (!nodesOfMinimalSpanningTree.contains(smallestEdge.getStart())){
+                nodesOfMinimalSpanningTree.add(smallestEdge.getStart());
+            }
+
+            edgesOfMinimalSpanningTree.add(smallestEdge);
+
+        }
+
+        return edgesOfMinimalSpanningTree;
+
+
+
+
+
+
+    }
+
+        private Edge getSmallestEdge(LinkedList<Node> nodesOfMinimalSpanningTree, LinkedList<Edge> edgesOfMinimalSpanningTree) {
+
+            LinkedList<Edge> reachableEdges = new LinkedList<>();
+
+            for (Edge edge : edges) {
+                if ((nodesOfMinimalSpanningTree.contains(edge.getStart()) ^ nodesOfMinimalSpanningTree.contains(edge.getEnd()))
+                        && !edgesOfMinimalSpanningTree.contains(edge)) {
+                    reachableEdges.add(edge);
+                }
+            }
+
+            Edge smallestEdge = reachableEdges.get(0);
+
+            for (Edge edge : reachableEdges) {
+                if (edge.getWeight() < smallestEdge.getWeight()){
+                    smallestEdge = edge;}
+
+            }
+
+            return smallestEdge;
+
+    }
+
+
+
+
 
 
 
