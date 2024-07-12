@@ -23,7 +23,6 @@ public class DijkstrasApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         Graph graph = new Graph();
-        LinkedList<Node> nodes = new LinkedList<>();
 
         //TODO: Definiere hier alle Knoten, die du im Graph haben möchtest
         Node nodeStart = new Node("Start");
@@ -49,22 +48,15 @@ public class DijkstrasApplication extends Application {
         graph.connectNodes(nodeStart, nodeA, 4);
         graph.connectNodes(nodeStart, nodeC, 7);
         graph.connectNodes(nodeStart, nodeE, 4);
-
         graph.connectNodes(nodeA, nodeB, 3);
         graph.connectNodes(nodeA, nodeC, 2);
-
         graph.connectNodes(nodeB, nodeD, 1);
-
         graph.connectNodes(nodeC, nodeD, 2);
         graph.connectNodes(nodeC, nodeE, 9);
-
         graph.connectNodes(nodeD, nodeF, 4);
         graph.connectNodes(nodeD, nodeZiel, 6);
-
         graph.connectNodes(nodeE, nodeF, 9);
-
         graph.connectNodes(nodeF, nodeZiel, 5);
-
 
         setupGUI(stage, graph, nodeStart, nodeZiel);
     }
@@ -130,7 +122,7 @@ public class DijkstrasApplication extends Application {
         int offsetY = canvasHeight /2;
 
         for (int i = 0; i < numberOfPoints; i++) {
-            double angle = i * angleStep;
+            double angle = i * angleStep + Math.PI;
             double x = radius * Math.cos(angle) + offsetX;
             double y = radius * Math.sin(angle) + offsetY;
             points.add(new Point2D(x, y));
