@@ -5,13 +5,7 @@ import java.util.*;
 public class Node {
 
     private String name;
-    private LinkedList<Edge> edges = new LinkedList<>();
 
-    public void addConnection(Node node, double weight) {
-        Edge edge = new Edge(this, node, weight);
-        edges.add(edge);
-        node.getEdges().add(edge);
-    }
 
     public Node(String name) {
         this.name = name;
@@ -22,9 +16,6 @@ public class Node {
         return name;
     }
 
-    public LinkedList<Edge> getEdges() {
-        return edges;
-    }
 
     @Override
     public String toString(){

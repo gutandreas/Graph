@@ -29,26 +29,32 @@ public class HelloApplication extends Application {
         Node nodeC = new Node("C");
         Node nodeD = new Node("D");
         Node nodeE = new Node("E");
-        nodeA.addConnection(nodeB, 9);
-        nodeB.addConnection(nodeC, 10);
-        nodeB.addConnection(nodeE, 14);
-        nodeB.addConnection(nodeD, 11);
-        nodeC.addConnection(nodeE, 10);
-        nodeE.addConnection(nodeA, 10);
         graph.addNode(nodeA);
         graph.addNode(nodeB);
         graph.addNode(nodeC);
         graph.addNode(nodeD);
         graph.addNode(nodeE);
+        graph.connectNodes(nodeA, nodeB, 9);
+        graph.connectNodes(nodeB, nodeC, 3);
+        graph.connectNodes(nodeC, nodeD, 22);
         System.out.println(graph);
-        LinkedList<Node> path = graph.getShortestPathFromTo(nodeA, nodeC);
-        System.out.println(path.size());
-        for (Node node : path){
-            System.out.println(node);
+
+
+        Node startNode = nodeA;
+        Node goalNode = nodeC;
+
+        setupGUI(stage, graph, startNode, goalNode);
+    }
+
+
+
+    private void setupGUI(Stage stage, Graph graph, Node startNode, Node goalNode) {
+        LinkedList<Node> path = graph.getShortestPathFromTo(startNode, goalNode);
+        for (Node n : path){
+            System.out.println(n.getName());
         }
 
-        stage.setTitle("Graph Drawing");
-
+        stage.setTitle("Dijkstras Algorithmus");
 
         // Create a Canvas
         int canvasWidth = 800;
@@ -62,12 +68,9 @@ public class HelloApplication extends Application {
 
         // Define nodes and edges
         List<GuiNode> guiNodes = new ArrayList<>();
-        Map<Node, GuiNode> nodeMap = new HashMap<Node, GuiNode>();
+        Map<Node, GuiNode> nodeMap = new HashMap<>();
 
-        List<Point2D> points = distributePointsOnCircle(100, graph.getNodes().size(), canvasWidth, canvasHeight);
-
-
-
+        List<Point2D> points = distributePointsOnCircle(Math.min(canvasHeight, canvasWidth)/2.0*0.9, graph.getNodes().size(), canvasWidth, canvasHeight);
 
 
         int counter = 0;
@@ -84,7 +87,7 @@ public class HelloApplication extends Application {
         List<GuiEdge> guiEdges = new ArrayList<>();
 
         for (Node node : graph.getNodes()){
-            for (Edge edge : node.getEdges()){
+            for (Edge edge : graph.getEdgesFromNode(node)){
                 guiEdges.add(new GuiEdge(nodeMap.get(edge.getStart()), nodeMap.get(edge.getEnd()), edge.getWeight()));
             }
         }
@@ -92,12 +95,14 @@ public class HelloApplication extends Application {
 
         // Draw the graph
         drawGraph(gc, guiNodes, guiEdges);
+        highlightPath(gc, path, nodeMap);
 
         // Create a Scene and show the Stage
         Scene scene = new Scene(pane, 800, 600);
         stage.setScene(scene);
         stage.show();
     }
+
 
     private List<Point2D> distributePointsOnCircle(double radius, int numberOfPoints, int canvasWidth, int canvasHeight) {
         List<Point2D> points = new ArrayList<>();
@@ -113,6 +118,20 @@ public class HelloApplication extends Application {
         }
 
         return points;
+    }
+
+    private void highlightPath(GraphicsContext gc, LinkedList<Node> path, Map<Node, GuiNode> map){
+        for (int i = 0; i < path.size()-1; i++) {
+            GuiNode n1 = map.get(path.get(i));
+            GuiNode n2 = map.get(path.get(i+1));
+            gc.setStroke(Color.LIGHTGREEN);
+            gc.setLineWidth(3);
+            gc.strokeLine(n1.x, n1.y, n2.x, n2.y);
+
+
+
+
+        }
     }
 
     private void drawGraph(GraphicsContext gc, List<GuiNode> nodes, List<GuiEdge> edges) {

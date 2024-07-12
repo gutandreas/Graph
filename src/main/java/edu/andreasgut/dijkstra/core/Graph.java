@@ -5,6 +5,7 @@ import java.util.*;
 public class Graph {
 
     private LinkedList<Node> nodes = new LinkedList<>();
+    private LinkedList<Edge> edges = new LinkedList<>();
 
 
     public Graph(){
@@ -20,7 +21,7 @@ public class Graph {
             for (int column = 0; column < matrix[0].length; column++) {
                 if (matrix[row][column] != 0){
                     Node currentNode = getNodeByName(String.valueOf(row));
-                    currentNode.addConnection(getNodeByName(String.valueOf(column)), matrix[row][column]);
+                    connectNodes(currentNode, getNodeByName(String.valueOf(column)), matrix[row][column]);
                 }
             }
         }
@@ -44,6 +45,33 @@ public class Graph {
         return nodes;
     }
 
+    public void connectNodes(Node startNode, Node endNode, double weight){
+        edges.add(new Edge(startNode, endNode, weight));
+        edges.add(new Edge(endNode, startNode, weight));
+    }
+
+    public LinkedList<Edge> getEdgesFromNode(Node node){
+        LinkedList<Edge> edgesList = new LinkedList<>();
+        for (Edge e : edges){
+            if (e.getStart().equals(node)){
+                edgesList.add(e);
+            }
+        }
+        return edgesList;
+    }
+
+    public LinkedList<Edge> getEdgeToNode(Node node){
+        LinkedList<Edge> edgesList = new LinkedList<>();
+        for (Edge e : edges){
+            if (e.getEnd().equals(node)){
+                edgesList.add(e);
+            }
+        }
+        return edgesList;
+    }
+
+
+
 
     @Override
     public String toString(){
@@ -52,7 +80,7 @@ public class Graph {
         for (Node node : nodes){
             graphAsString += "Knoten: " + node.toString();
             graphAsString += "\n";
-            for (Edge edge : node.getEdges()){
+            for (Edge edge : getEdgesFromNode(node)){
                 graphAsString += edge.toString();
                 graphAsString += "\n";
             }
@@ -110,7 +138,7 @@ public class Graph {
     }
 
     private void updateDistancesInDistanceMap(Node currentNode, Map<Node, Double> distanceToNodesMap, Map<Node, Node> previousNodeMap){
-        for (Edge edge : currentNode.getEdges()){
+        for (Edge edge : getEdgesFromNode(currentNode)){
             double currentWeight = distanceToNodesMap.get(edge.getEnd());
             double newPossibleWeight = distanceToNodesMap.get(currentNode) + edge.getWeight();
             if (newPossibleWeight < currentWeight){
@@ -123,7 +151,7 @@ public class Graph {
 
     private LinkedList<Node> getFirstTimeVisitedNodes(Node currentNode, LinkedList<Node> visitedNodes){
         LinkedList<Node> firstTimeVisitedNodes = new LinkedList<>();
-        for (Edge edge : currentNode.getEdges()){
+        for (Edge edge : getEdgesFromNode(currentNode)){
             if (!visitedNodes.contains(edge.getEnd())){
                 firstTimeVisitedNodes.add(edge.getEnd());
             }
