@@ -1,6 +1,4 @@
-package edu.andreasgut.dijkstra.core;
-
-import java.util.*;
+package edu.andreasgut.graph.core;
 
 public class Node {
 

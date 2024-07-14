@@ -1,4 +1,4 @@
-package edu.andreasgut.dijkstra.core;
+package edu.andreasgut.graph.core;
 
 public class Edge {
 

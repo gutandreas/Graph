@@ -1,9 +1,9 @@
-package edu.andreasgut.dijkstra;
+package edu.andreasgut.graph;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class DijkstrasController {
+public class GraphController {
     @FXML
     private Label welcomeText;
 

@@ -1,8 +1,8 @@
-package edu.andreasgut.dijkstra;
+package edu.andreasgut.graph;
 
-import edu.andreasgut.dijkstra.core.Edge;
-import edu.andreasgut.dijkstra.core.Graph;
-import edu.andreasgut.dijkstra.core.Node;
+import edu.andreasgut.graph.core.Edge;
+import edu.andreasgut.graph.core.Graph;
+import edu.andreasgut.graph.core.Node;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
 
-public class DijkstrasApplication extends Application {
+public class GraphApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {

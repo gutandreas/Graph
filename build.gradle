@@ -24,8 +24,8 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainModule = 'edu.andreasgut.dijkstra'
-    mainClass = 'edu.andreasgut.dijkstra.HelloApplication'
+    mainModule = 'edu.andreasgut.graph'
+    mainClass = 'edu.andreasgut.graph.GraphApplication'
 }
 
 javafx {

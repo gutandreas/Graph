@@ -3,6 +3,6 @@ module edu.andreasgut.dijkstra {
     requires javafx.fxml;
 
 
-    opens edu.andreasgut.dijkstra to javafx.fxml;
-    exports edu.andreasgut.dijkstra;
+    opens edu.andreasgut.graph to javafx.fxml;
+    exports edu.andreasgut.graph;
 }
