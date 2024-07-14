@@ -1,4 +1,4 @@
-module edu.andreasgut.dijkstra {
+module edu.andreasgut.graph {
     requires javafx.controls;
     requires javafx.fxml;
 

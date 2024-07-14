@@ -21,7 +21,7 @@ public class GraphApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         //TODO: Definiere, ob der Minimale Spannbaum (1) oder der Kürzeste Weg (2) markiert werden soll
-        int modus = 2;
+        int modus = 1;
 
         //TODO: Definiere, ob Szenario Häuserquartier (1), Szenario Fluss (2) oder eigenes Szenario (3) gewählt wird
         //      Wählst du eigenes Szenario (3), implementiere die Methode defineCustomGraph im Anschluss entsprechend
