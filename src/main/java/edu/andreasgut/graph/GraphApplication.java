@@ -54,38 +54,25 @@ public class GraphApplication extends Application {
     private Graph defineCustomGraph(){
 
         Graph graph = new Graph();
+
         //TODO: Definiere hier alle Knoten, die du im Graph haben möchtest
         Node nodeA = new Node("A");
         Node nodeB = new Node("B");
         Node nodeC = new Node("C");
-        Node nodeD = new Node("D");
-        Node nodeE = new Node("E");
-        Node nodeF = new Node("F");
-        Node nodeG = new Node("G");
 
         //TODO: Füge hier alle Knoten zum Graph hinzu
         graph.addNode(nodeA);
         graph.addNode(nodeB);
         graph.addNode(nodeC);
-        graph.addNode(nodeD);
-        graph.addNode(nodeE);
-        graph.addNode(nodeF);
-        graph.addNode(nodeG);
-
 
         //TODO: Erstelle hier alle Kanten, die du zwischen zwei Knoten einfügen möchtest
         graph.connectNodes(nodeA, nodeB, 4);
-        graph.connectNodes(nodeA, nodeF, 7);
+        graph.connectNodes(nodeA, nodeC, 8);
         graph.connectNodes(nodeB, nodeC, 2);
-        graph.connectNodes(nodeB, nodeE, 6);
-        graph.connectNodes(nodeB, nodeF, 9);
-        graph.connectNodes(nodeC, nodeD, 3);
-        graph.connectNodes(nodeC, nodeE, 2);
-        graph.connectNodes(nodeE, nodeF, 9);
-        graph.connectNodes(nodeF, nodeG, 6);
 
         return graph;
     }
+
 
     private Graph getGraphTemplate(int number) {
         switch (number) {
@@ -168,12 +155,14 @@ public class GraphApplication extends Application {
 
         if (modus == 1){
             minimalSpanningTree = graph.getMinimalSpanningTree();
+            stage.setTitle("Minimaler Spannbaum");
         }
         if (modus == 2){
             shortestPath = graph.getShortestPathFromTo(startNode, goalNode);
+            stage.setTitle("Kürzester Pfad");
         }
 
-        stage.setTitle("Dijkstras Algorithmus");
+
 
         int canvasWidth = 800;
         int canvasHeight = 600;
