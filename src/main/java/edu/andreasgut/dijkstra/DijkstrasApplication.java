@@ -20,54 +20,158 @@ public class DijkstrasApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        Graph graph = new Graph();
-
         //TODO: Definiere, ob der Minimale Spannbaum (1) oder der Kürzeste Weg (2) markiert werden soll
         int modus = 2;
 
+        //TODO: Definiere, ob Szenario Häuserquartier (1), Szenario Fluss (2) oder eigenes Szenario (3) gewählt wird
+        //      Wählst du eigenes Szenario (3), implementiere die Methode defineCustomGraph im Anschluss entsprechend
+        int template = 1;
+
+        //TODO: Falls du Modus 1 gewählt hast, nenne den Namen des Start- und des Endknotens
+        String startNodeName = "Start";
+        String endNodeName = "Ziel";
+
+
+        Node startNode = null;
+        Node endNote = null;
+        Graph graph;
+
+        if (template != 3){
+            graph = getGraphTemplate(template);
+         }else {
+            graph = defineCustomGraph();
+        }
+
+        if (modus == 2){
+            startNode = graph.getNodeByName(startNodeName);
+            endNote = graph.getNodeByName(endNodeName);
+        }
+
+        setupGUI(stage, graph, startNode, endNote, modus);
+
+    }
+
+    private Graph defineCustomGraph(){
+
+        Graph graph = new Graph();
         //TODO: Definiere hier alle Knoten, die du im Graph haben möchtest
-        Node nodeStart = new Node("Start");
         Node nodeA = new Node("A");
         Node nodeB = new Node("B");
         Node nodeC = new Node("C");
         Node nodeD = new Node("D");
         Node nodeE = new Node("E");
         Node nodeF = new Node("F");
-        Node nodeZiel = new Node("Ziel");
+        Node nodeG = new Node("G");
 
         //TODO: Füge hier alle Knoten zum Graph hinzu
-        graph.addNode(nodeStart);
         graph.addNode(nodeA);
         graph.addNode(nodeB);
         graph.addNode(nodeC);
         graph.addNode(nodeD);
         graph.addNode(nodeE);
         graph.addNode(nodeF);
-        graph.addNode(nodeZiel);
+        graph.addNode(nodeG);
+
 
         //TODO: Erstelle hier alle Kanten, die du zwischen zwei Knoten einfügen möchtest
-        graph.connectNodes(nodeStart, nodeA, 4);
-        graph.connectNodes(nodeStart, nodeC, 7);
-        graph.connectNodes(nodeStart, nodeE, 4);
-        graph.connectNodes(nodeA, nodeB, 3);
-        graph.connectNodes(nodeA, nodeC, 2);
-        graph.connectNodes(nodeB, nodeD, 1);
-        graph.connectNodes(nodeC, nodeD, 2);
-        graph.connectNodes(nodeC, nodeE, 9);
-        graph.connectNodes(nodeD, nodeF, 4);
-        graph.connectNodes(nodeD, nodeZiel, 6);
+        graph.connectNodes(nodeA, nodeB, 4);
+        graph.connectNodes(nodeA, nodeF, 7);
+        graph.connectNodes(nodeB, nodeC, 2);
+        graph.connectNodes(nodeB, nodeE, 6);
+        graph.connectNodes(nodeB, nodeF, 9);
+        graph.connectNodes(nodeC, nodeD, 3);
+        graph.connectNodes(nodeC, nodeE, 2);
         graph.connectNodes(nodeE, nodeF, 9);
-        graph.connectNodes(nodeF, nodeZiel, 5);
+        graph.connectNodes(nodeF, nodeG, 6);
 
-        setupGUI(stage, graph, nodeStart, nodeZiel, modus);
+        return graph;
     }
 
+    private Graph getGraphTemplate(int number) {
+        switch (number) {
+            case 1:
+                Graph graph1 = new Graph();
+                Node nodeA = new Node("A");
+                Node nodeB = new Node("B");
+                Node nodeC = new Node("C");
+                Node nodeD = new Node("D");
+                Node nodeE = new Node("E");
+                Node nodeF = new Node("F");
+                Node nodeG = new Node("G");
 
+                graph1.addNode(nodeA);
+                graph1.addNode(nodeB);
+                graph1.addNode(nodeC);
+                graph1.addNode(nodeD);
+                graph1.addNode(nodeE);
+                graph1.addNode(nodeF);
+                graph1.addNode(nodeG);
+
+                graph1.connectNodes(nodeA, nodeB, 4);
+                graph1.connectNodes(nodeA, nodeF, 7);
+                graph1.connectNodes(nodeB, nodeC, 2);
+                graph1.connectNodes(nodeB, nodeE, 6);
+                graph1.connectNodes(nodeB, nodeF, 9);
+                graph1.connectNodes(nodeC, nodeD, 3);
+                graph1.connectNodes(nodeC, nodeE, 2);
+                graph1.connectNodes(nodeE, nodeF, 9);
+                graph1.connectNodes(nodeF, nodeG, 6);
+                return graph1;
+
+
+            case 2:
+
+                Graph graph2 = new Graph();
+                Node nodeStart = new Node("Start");
+                Node nodeA2 = new Node("A");
+                Node nodeB2 = new Node("B");
+                Node nodeC2 = new Node("C");
+                Node nodeD2 = new Node("D");
+                Node nodeE2 = new Node("E");
+                Node nodeF2 = new Node("F");
+                Node nodeZiel = new Node("Ziel");
+
+                graph2.addNode(nodeStart);
+                graph2.addNode(nodeA2);
+                graph2.addNode(nodeB2);
+                graph2.addNode(nodeC2);
+                graph2.addNode(nodeD2);
+                graph2.addNode(nodeE2);
+                graph2.addNode(nodeF2);
+                graph2.addNode(nodeZiel);
+
+                graph2.connectNodes(nodeStart, nodeA2, 4);
+                graph2.connectNodes(nodeStart, nodeC2, 7);
+                graph2.connectNodes(nodeStart, nodeE2, 4);
+                graph2.connectNodes(nodeA2, nodeB2, 3);
+                graph2.connectNodes(nodeA2, nodeC2, 2);
+                graph2.connectNodes(nodeB2, nodeD2, 1);
+                graph2.connectNodes(nodeC2, nodeD2, 2);
+                graph2.connectNodes(nodeC2, nodeE2, 9);
+                graph2.connectNodes(nodeD2, nodeF2, 4);
+                graph2.connectNodes(nodeD2, nodeZiel, 6);
+                graph2.connectNodes(nodeE2, nodeF2, 9);
+                graph2.connectNodes(nodeF2, nodeZiel, 5);
+
+                return graph2;
+
+
+            default:
+                return null;
+        }
+
+    }
 
     private void setupGUI(Stage stage, Graph graph, Node startNode, Node goalNode, int modus) {
-        LinkedList<Node> shortestPath = graph.getShortestPathFromTo(startNode, goalNode);
-        LinkedList<Edge> minimalSpanningTree = graph.getMinimalSpanningTree();
+        LinkedList<Edge> minimalSpanningTree = null;
+        LinkedList<Node> shortestPath = null;
 
+        if (modus == 1){
+            minimalSpanningTree = graph.getMinimalSpanningTree();
+        }
+        if (modus == 2){
+            shortestPath = graph.getShortestPathFromTo(startNode, goalNode);
+        }
 
         stage.setTitle("Dijkstras Algorithmus");
 
@@ -84,7 +188,6 @@ public class DijkstrasApplication extends Application {
         Map<Node, GuiNode> nodeMap = new HashMap<>();
 
         List<Point2D> points = distributePointsOnCircle(Math.min(canvasHeight, canvasWidth)/2.0*0.85, graph.getNodes().size(), canvasWidth, canvasHeight);
-
 
         int counter = 0;
         for (Node node : graph.getNodes()){
@@ -107,15 +210,13 @@ public class DijkstrasApplication extends Application {
 
 
         drawGraph(gc, guiNodes, guiEdges);
-        if (modus == 1){
-            highlightPath(gc, shortestPath, nodeMap);
-        }
-        if (modus == 2) {
+
+        if (modus == 1) {
             highlightMinimalSpanningTree(gc, minimalSpanningTree, nodeMap);
         }
-
-
-
+        if (modus == 2){
+            highlightPath(gc, shortestPath, nodeMap);
+        }
 
         Scene scene = new Scene(pane, 800, 600);
         stage.setScene(scene);
